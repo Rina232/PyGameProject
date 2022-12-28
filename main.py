@@ -38,7 +38,7 @@ def terminate():
 
 
 def start_screen():  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    intro_text = ["ЗАСТАВКА", "",
+    intro_text = ["КОСМИЧЕСКАЯ ОБОРОНА", "",
                   "Правила игры",
                   ""]
 
@@ -46,8 +46,8 @@ def start_screen():  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     screen.blit(fon, (0, 0))
     text_coord = 100
     for line in intro_text:
-        font = pygame.font.SysFont('Arial', 30)
-        string_rendered = font.render(line, 1, pygame.Color(211, 202, 219))
+        font = pygame.font.SysFont('MathSansBold', 30)
+        string_rendered = font.render(line, 1, pygame.Color(247, 235, 243))
         intro_rect = string_rendered.get_rect()
         text_coord += 10
         intro_rect.top = text_coord
@@ -65,30 +65,31 @@ def start_screen():  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         clock.tick(FPS)
 
 
-# class AnimatedSprite(pygame.sprite.Sprite):
-#    def __init__(self, sheet, columns, rows, x, y):
-#        super().__init__(all_sprites)
-#        self.frames = []
-#        self.cut_sheet(sheet, columns, rows)
-#        self.cur_frame = 0
-#        self.image = self.frames[self.cur_frame]
-#        self.rect = self.rect.move(x, y)
-#        self.k = 0
-#
-#    def cut_sheet(self, sheet, columns, rows):
-#        self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
-#                                sheet.get_height() // rows)
-#        for j in range(rows):
-#            for i in range(columns):
-#                frame_location = (self.rect.w * i, self.rect.h * j)
-#                self.frames.append(sheet.subsurface(pygame.Rect(
-#                    frame_location, self.rect.size)))
-#
-#    def update(self):
-#        self.k += 1
-#        if self.k % 5 == 0:
-#            self.cur_frame = (self.cur_frame + 1) % len(self.frames)
-#            self.image = self.frames[self.cur_frame]
+class AnimatedSprite(pygame.sprite.Sprite):
+    def __init__(self, sheet, columns, rows, x, y):
+        super().__init__(all_sprites)
+        self.frames = []
+        self.cut_sheet(sheet, columns, rows)
+        self.cur_frame = 0
+        self.image = self.frames[self.cur_frame]
+        self.rect = self.rect.move(x, y)
+        self.k = 0
+
+    def cut_sheet(self, sheet, columns, rows):
+        self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
+                                sheet.get_height() // rows)
+        for j in range(rows):
+            for i in range(columns):
+                frame_location = (self.rect.w * i, self.rect.h * j)
+                self.frames.append(sheet.subsurface(pygame.Rect(
+                    frame_location, self.rect.size)))
+
+    def update(self):
+        self.k += 1
+        if self.k % 5 == 0:
+            self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+            self.image = self.frames[self.cur_frame]
+
 
 start_screen()
 
