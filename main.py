@@ -157,37 +157,117 @@ def rules_screen():
 
 def level_1():
     fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
-    screen.blit(fon, (0, 0))
+    spaceship = Spaceship(load_image("Picture\spaceship.png"), 3, 4, 100, 100)
 
-    spaceship = Spaceship(load_image("Picture\spaceship.png"), 1, 5, 63, 32)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    level_screen()
+
+        screen.blit(fon, (0, 0))
+        pygame.draw.rect(screen, (252, 242, 255), (10, 10,
+                                                   40, 40))
+        pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
+
+        all_sprites.draw(screen)
+        all_sprites.update()
+        pygame.display.flip()
+        clock.tick(FPS)
 
 
 def level_2():
     fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
-    screen.blit(fon, (0, 0))
+    spaceship = Spaceship(load_image("Picture\spaceship.png"), 3, 4, 100, 100)
 
-    spaceship = Spaceship(load_image("Picture\spaceship.png"), 1, 5, 63, 32)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    level_screen()
+
+        screen.blit(fon, (0, 0))
+        pygame.draw.rect(screen, (252, 242, 255), (10, 10,
+                                                   40, 40))
+        pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
+
+        all_sprites.draw(screen)
+        all_sprites.update()
+        pygame.display.flip()
+        clock.tick(FPS)
 
 
 def level_3():
     fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
-    screen.blit(fon, (0, 0))
+    spaceship = Spaceship(load_image("Picture\spaceship.png"), 3, 4, 100, 100)
 
-    spaceship = Spaceship(load_image("Picture\spaceship.png"), 1, 5, 63, 32)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    level_screen()
+
+        screen.blit(fon, (0, 0))
+        pygame.draw.rect(screen, (252, 242, 255), (10, 10,
+                                                   40, 40))
+        pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
+
+        all_sprites.draw(screen)
+        all_sprites.update()
+        pygame.display.flip()
+        clock.tick(FPS)
 
 
 def level_4():
     fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
-    screen.blit(fon, (0, 0))
+    spaceship = Spaceship(load_image("Picture\spaceship.png"), 3, 4, 100, 100)
 
-    spaceship = Spaceship(load_image("Picture\spaceship.png"), 1, 5, 63, 32)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    level_screen()
+
+        screen.blit(fon, (0, 0))
+        pygame.draw.rect(screen, (252, 242, 255), (10, 10,
+                                                   40, 40))
+        pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
+
+        all_sprites.draw(screen)
+        all_sprites.update()
+        pygame.display.flip()
+        clock.tick(FPS)
 
 
 def level_5():
     fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
-    screen.blit(fon, (0, 0))
+    spaceship = Spaceship(load_image("Picture\spaceship.png"), 3, 4, 100, 100)
 
-    spaceship = Spaceship(load_image("Picture\spaceship.png"), 1, 5, 63, 32)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                terminate()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    level_screen()
+
+        screen.blit(fon, (0, 0))
+        pygame.draw.rect(screen, (252, 242, 255), (10, 10,
+                                                   40, 40))
+        pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
+
+        all_sprites.draw(screen)
+        all_sprites.update()
+        pygame.display.flip()
+        clock.tick(FPS)
 
 
 class Spaceship(pygame.sprite.Sprite):
