@@ -56,8 +56,8 @@ def start_screen():
     h = 0
     w = 0
     text_list = ["Правила игры", "Играть"]
+    font = pygame.font.SysFont('MathSans', 27)
     for line in text_list:
-        font = pygame.font.SysFont('MathSans', 27)
         text = font.render(line, 1, pygame.Color(97, 69, 107))
         m_rect = text.get_rect()
         m_rect.top = text_coord
@@ -92,6 +92,28 @@ def level_screen():
                                                40, 40))
     pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
 
+    text_list = ["Уровень 1", "Уровень 2", "Уровень 3", "Уровень 4",
+                 "Уровень 5", "Скоро...", "Скоро...", "Скоро...", "Скоро..."]
+    font = pygame.font.SysFont('MathSansBold', 27)
+    text_y = 120
+    y = 80
+    k = 0
+    for i in range(3):
+        x = 60
+        text_x = 73
+        for j in range(3):
+            text = font.render(text_list[k], 1, pygame.Color(252, 242, 255))
+            m_rect = text.get_rect()
+            m_rect.y = text_y
+            m_rect.x = text_x
+            pygame.draw.rect(screen, (97, 69, 107), (x, y, 120, 100))
+            screen.blit(text, m_rect)
+            text_x += 140
+            x += 140
+            k += 1
+        text_y += 140
+        y += 140
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -99,6 +121,18 @@ def level_screen():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
                     start_screen()
+                elif 60 <= event.pos[0] <= 180:
+                    if 80 <= event.pos[1] <= 180:
+                        level_1()
+                    elif 220 <= event.pos[1] <= 320:
+                        level_4()
+                elif 200 <= event.pos[0] <= 320:
+                    if 80 <= event.pos[1] <= 180:
+                        level_2()
+                    elif 220 <= event.pos[1] <= 320:
+                        level_5()
+                elif 340 <= event.pos[0] <= 460 and 80 <= event.pos[1] <= 180:
+                    level_3()
         pygame.display.flip()
         clock.tick(FPS)
 
@@ -119,6 +153,41 @@ def rules_screen():
                     start_screen()
         pygame.display.flip()
         clock.tick(FPS)
+
+
+def level_1():
+    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
+    screen.blit(fon, (0, 0))
+
+    spaceship = Spaceship(load_image("Picture\spaceship.png"), 1, 5, 63, 32)
+
+
+def level_2():
+    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
+    screen.blit(fon, (0, 0))
+
+    spaceship = Spaceship(load_image("Picture\spaceship.png"), 1, 5, 63, 32)
+
+
+def level_3():
+    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
+    screen.blit(fon, (0, 0))
+
+    spaceship = Spaceship(load_image("Picture\spaceship.png"), 1, 5, 63, 32)
+
+
+def level_4():
+    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
+    screen.blit(fon, (0, 0))
+
+    spaceship = Spaceship(load_image("Picture\spaceship.png"), 1, 5, 63, 32)
+
+
+def level_5():
+    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
+    screen.blit(fon, (0, 0))
+
+    spaceship = Spaceship(load_image("Picture\spaceship.png"), 1, 5, 63, 32)
 
 
 class Spaceship(pygame.sprite.Sprite):
@@ -147,7 +216,6 @@ class Spaceship(pygame.sprite.Sprite):
             self.image = self.frames[self.cur_frame]
 
 
-# spaceship = Spaceship(load_image("Picture\spaceship.png"), 1, 5, 63, 32)
 pygame.display.set_caption('Космическая оборона')
 pygame_icon = pygame.image.load(f'data\\Picture\\icon.png')
 pygame.display.set_icon(pygame_icon)
