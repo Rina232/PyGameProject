@@ -1,6 +1,7 @@
 import pygame
 import os
 import sys
+import random
 
 pygame.init()
 
@@ -156,8 +157,9 @@ def rules_screen():
 
 
 def level_1():
-    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
-    spaceship = Spaceship(load_image("Picture\spaceship.png"), 3, 4, 100, 100)
+    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'),
+                                 (WIDTH, HEIGHT))
+    spaceship = Spaceship()
 
     while True:
         for event in pygame.event.get():
@@ -179,8 +181,9 @@ def level_1():
 
 
 def level_2():
-    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
-    spaceship = Spaceship(load_image("Picture\spaceship.png"), 3, 4, 100, 100)
+    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'),
+                                 (WIDTH, HEIGHT))
+    spaceship = Spaceship()
 
     while True:
         for event in pygame.event.get():
@@ -202,8 +205,9 @@ def level_2():
 
 
 def level_3():
-    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
-    spaceship = Spaceship(load_image("Picture\spaceship.png"), 3, 4, 100, 100)
+    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'),
+                                 (WIDTH, HEIGHT))
+    spaceship = Spaceship()
 
     while True:
         for event in pygame.event.get():
@@ -225,8 +229,9 @@ def level_3():
 
 
 def level_4():
-    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
-    spaceship = Spaceship(load_image("Picture\spaceship.png"), 3, 4, 100, 100)
+    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'),
+                                 (WIDTH, HEIGHT))
+    spaceship = Spaceship()
 
     while True:
         for event in pygame.event.get():
@@ -248,8 +253,10 @@ def level_4():
 
 
 def level_5():
-    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'), (WIDTH, HEIGHT))
-    spaceship = Spaceship(load_image("Picture\spaceship.png"), 3, 4, 100, 100)
+    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'),
+                                 (WIDTH, HEIGHT))
+    spaceship = Spaceship()
+    meteorite_1 = Meteorite_2()
 
     while True:
         for event in pygame.event.get():
@@ -271,13 +278,14 @@ def level_5():
 
 
 class Spaceship(pygame.sprite.Sprite):
-    def __init__(self, sheet, columns, rows, x, y):
+    def __init__(self):
         super().__init__(all_sprites)
         self.frames = []
-        self.cut_sheet(sheet, columns, rows)
+        self.cut_sheet(pygame.transform.scale(load_image("Picture\spaceship.png"),
+                                              (450, 600)), 3, 4)
         self.cur_frame = 0
         self.image = self.frames[self.cur_frame]
-        self.rect = self.rect.move(x, y)
+        self.rect = self.rect.move(175, 440)
         self.k = 0
 
     def cut_sheet(self, sheet, columns, rows):
@@ -294,6 +302,98 @@ class Spaceship(pygame.sprite.Sprite):
         if self.k % 5 == 0:
             self.cur_frame = (self.cur_frame + 1) % len(self.frames)
             self.image = self.frames[self.cur_frame]
+
+
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__(all_sprites)
+        self.health = 0
+        self.frames = []
+        self.cur_frame = 0
+        self.k = 0
+        hits = ['hit1', 'hit2', 'hit3', 'hit4', 'hit5', 'hit6']
+        self.hit = random.choice(hits)
+        if self.hit == 'hit1' or self.hit == 'hit3':
+            self.cut_sheet(pygame.transform.scale(load_image(f"Picture\{self.hit}.png"),
+                                                  (64, 320)), 1, 5)
+            self.n = 25
+        else:
+            self.cut_sheet(pygame.transform.scale(load_image(f"Picture\{self.hit}.png"),
+                                                  (64, 448)), 1, 7)
+            self.n = 35
+
+    def update(self):
+        if self.health == 0 and self.k < self.n:
+            self.k += 1
+            if self.k % 5 == 0:
+                self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+                self.image = self.frames[self.cur_frame]
+        if self.k >= self.n:
+            self.rect = self.rect.move(1000, 1000)
+
+
+    def cut_sheet(self, sheet, columns, rows):
+        self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
+                                sheet.get_height() // rows)
+        for j in range(rows):
+            for i in range(columns):
+                frame_location = (self.rect.w * i, self.rect.h * j)
+                self.frames.append(sheet.subsurface(pygame.Rect(
+                    frame_location, self.rect.size)))
+
+
+class Meteorite_1(Enemy):
+    def __init__(self):
+        super().__init__()
+        self.health = 10
+        self.speed = 35
+        self.image = pygame.transform.scale(load_image("Picture\Meteorite_1.png"), (100, 100))
+        self.rect = self.image.get_rect()
+
+
+class Meteorite_2(Enemy):
+    def __init__(self):
+        super().__init__()
+        self.health = 100
+        self.speed = 15
+        self.image = load_image("Picture\Meteorite_2.png")
+        self.rect = self.image.get_rect()
+        self.rect = self.rect.move(100, 100)
+
+
+class Asteroid_1(Enemy):
+    def __init__(self):
+        super().__init__()
+        self.health = 30
+        self.speed = 20
+        self.image = load_image("Picture\Asteroid_1.png")
+        self.rect = self.image.get_rect()
+
+
+class Asteroid_2(Enemy):
+    def __init__(self):
+        super().__init__()
+        self.health = 150
+        self.speed = 15
+        self.image = load_image("Picture\Asteroid_2.png")
+        self.rect = self.image.get_rect()
+
+
+class Comet(Enemy):
+    def __init__(self):
+        super().__init__()
+        self.health = 20
+        self.speed = 25
+        self.image = load_image("Picture\Comet.png")
+        self.rect = self.image.get_rect()
+
+
+class Satellite(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__(all_sprites)
+        self.speed = 15
+        self.image = load_image("Picture\Satellite.png")
+        self.rect = self.image.get_rect()
 
 
 pygame.display.set_caption('Космическая оборона')
