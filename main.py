@@ -167,6 +167,7 @@ def level_1():
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    spaceship.kill()
                     level_screen()
 
         screen.blit(fon, (0, 0))
@@ -191,6 +192,7 @@ def level_2():
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    spaceship.kill()
                     level_screen()
 
         screen.blit(fon, (0, 0))
@@ -215,6 +217,7 @@ def level_3():
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    spaceship.kill()
                     level_screen()
 
         screen.blit(fon, (0, 0))
@@ -239,6 +242,7 @@ def level_4():
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    spaceship.kill()
                     level_screen()
 
         screen.blit(fon, (0, 0))
@@ -263,6 +267,7 @@ def level_5():
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    spaceship.kill()
                     level_screen()
 
         screen.blit(fon, (0, 0))
@@ -328,7 +333,7 @@ class Enemy(pygame.sprite.Sprite):
                 self.cur_frame = (self.cur_frame + 1) % len(self.frames)
                 self.image = self.frames[self.cur_frame]
         if self.k >= self.n:
-            self.rect = self.rect.move(1000, 1000)
+            self.kill()
 
     def cut_sheet(self, sheet, columns, rows):
         self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
