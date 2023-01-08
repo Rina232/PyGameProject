@@ -256,7 +256,6 @@ def level_5():
     fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
     spaceship = Spaceship()
-    meteorite_1 = Meteorite_2()
 
     while True:
         for event in pygame.event.get():
@@ -331,7 +330,6 @@ class Enemy(pygame.sprite.Sprite):
         if self.k >= self.n:
             self.rect = self.rect.move(1000, 1000)
 
-
     def cut_sheet(self, sheet, columns, rows):
         self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
                                 sheet.get_height() // rows)
@@ -358,7 +356,6 @@ class Meteorite_2(Enemy):
         self.speed = 15
         self.image = load_image("Picture\Meteorite_2.png")
         self.rect = self.image.get_rect()
-        self.rect = self.rect.move(100, 100)
 
 
 class Asteroid_1(Enemy):
