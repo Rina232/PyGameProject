@@ -5,10 +5,9 @@ import random
 
 pygame.init()
 
-FPS = 50
+FPS = 30
 WIDTH = 500
 HEIGHT = 600
-STEP = 50
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
@@ -162,6 +161,11 @@ def level_1():
     spaceship = Spaceship()
 
     while True:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and spaceship.rect.x > 5:
+            move(spaceship, 'left')
+        if keys[pygame.K_RIGHT] and spaceship.rect.x < 345:
+            move(spaceship, 'right')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
@@ -187,6 +191,11 @@ def level_2():
     spaceship = Spaceship()
 
     while True:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and spaceship.rect.x > 5:
+            move(spaceship, 'left')
+        if keys[pygame.K_RIGHT] and spaceship.rect.x < 345:
+            move(spaceship, 'right')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
@@ -212,6 +221,11 @@ def level_3():
     spaceship = Spaceship()
 
     while True:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and spaceship.rect.x > 5:
+            move(spaceship, 'left')
+        if keys[pygame.K_RIGHT] and spaceship.rect.x < 345:
+            move(spaceship, 'right')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
@@ -237,6 +251,11 @@ def level_4():
     spaceship = Spaceship()
 
     while True:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and spaceship.rect.x > 5:
+            move(spaceship, 'left')
+        if keys[pygame.K_RIGHT] and spaceship.rect.x < 345:
+            move(spaceship, 'right')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
@@ -262,6 +281,11 @@ def level_5():
     spaceship = Spaceship()
 
     while True:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and spaceship.rect.x > 5:
+            move(spaceship, 'left')
+        if keys[pygame.K_RIGHT] and spaceship.rect.x < 345:
+            move(spaceship, 'right')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
@@ -291,6 +315,7 @@ class Spaceship(pygame.sprite.Sprite):
         self.image = self.frames[self.cur_frame]
         self.rect = self.rect.move(175, 440)
         self.k = 0
+        self.speed = 30
 
     def cut_sheet(self, sheet, columns, rows):
         self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
@@ -343,6 +368,17 @@ class Enemy(pygame.sprite.Sprite):
                 frame_location = (self.rect.w * i, self.rect.h * j)
                 self.frames.append(sheet.subsurface(pygame.Rect(
                     frame_location, self.rect.size)))
+
+
+def move(obj, rule):
+    if rule == 'left':
+        obj.rect.x -= obj.speed * 3 / FPS
+    if rule == 'right':
+        obj.rect.x += obj.speed * 3 / FPS
+    if rule == 'up':
+        obj.rect.y -= obj.speed * 3 / FPS
+    if rule == 'down':
+        obj.rect.y += obj.speed * 3 / FPS
 
 
 class Meteorite(Enemy):
