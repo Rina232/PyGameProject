@@ -345,7 +345,7 @@ class Enemy(pygame.sprite.Sprite):
                     frame_location, self.rect.size)))
 
 
-class Meteorite_1(Enemy):
+class Meteorite(Enemy):
     def __init__(self):
         super().__init__()
         self.health = 10
@@ -354,7 +354,7 @@ class Meteorite_1(Enemy):
         self.rect = self.image.get_rect()
 
 
-class Meteorite_2(Enemy):
+class Meteorite_Boss(Enemy):
     def __init__(self):
         super().__init__()
         self.health = 100
@@ -363,7 +363,7 @@ class Meteorite_2(Enemy):
         self.rect = self.image.get_rect()
 
 
-class Asteroid_1(Enemy):
+class Asteroid(Enemy):
     def __init__(self):
         super().__init__()
         self.health = 30
@@ -372,7 +372,7 @@ class Asteroid_1(Enemy):
         self.rect = self.image.get_rect()
 
 
-class Asteroid_2(Enemy):
+class Asteroid_Boss(Enemy):
     def __init__(self):
         super().__init__()
         self.health = 150
