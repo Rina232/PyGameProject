@@ -2,17 +2,21 @@ import pygame
 import os
 import sys
 import random
+import pygame.mixer
 
 pygame.init()
 
 FPS = 30
 WIDTH = 500
 HEIGHT = 600
+SCORE = 0
+sc = 0
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 
 all_sprites = pygame.sprite.Group()
+enemies = pygame.sprite.Group()
 
 
 def load_image(name, colorkey=None):
@@ -38,7 +42,7 @@ def terminate():
 
 def start_screen():
 
-    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground1.png'), (WIDTH, HEIGHT))
+    fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground1.png'), (WIDTH, HEIGHT))
     screen.blit(fon, (0, 0))
 
     main_text = "КОСМИЧЕСКАЯ ОБОРОНА"
@@ -86,17 +90,20 @@ def start_screen():
 
 
 def level_screen():
-    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground2.png'), (WIDTH, HEIGHT))
+    fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground2.png'), (WIDTH, HEIGHT))
     screen.blit(fon, (0, 0))
     pygame.draw.rect(screen, (252, 242, 255), (10, 10,
                                                40, 40))
     pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
+    font = pygame.font.SysFont('MathSansBold', 30)
+    text = font.render(f'СЧЁТ: {SCORE}', 1, pygame.Color(252, 242, 255))
+    screen.blit(text, (215, 25))
 
     text_list = ["Уровень 1", "Уровень 2", "Уровень 3", "Уровень 4",
                  "Уровень 5", "Скоро...", "Скоро...", "Скоро...", "Скоро..."]
     font = pygame.font.SysFont('MathSansBold', 27)
-    text_y = 120
-    y = 80
+    text_y = 140
+    y = 100
     k = 0
     for i in range(3):
         x = 60
@@ -156,8 +163,14 @@ def rules_screen():
 
 
 def level_1():
-    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'),
+    fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
+    global SCORE
+    global sc
+    sc = 0
+    pygame.mixer.music.pause()
+    pygame.mixer.music.load(di + 'music.mp3')
+    pygame.mixer.music.play(-1)
     spaceship = Spaceship()
 
     while True:
@@ -171,7 +184,11 @@ def level_1():
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    SCORE += sc
                     spaceship.kill()
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.load(di + 'menu_music.mp3')
+                    pygame.mixer.music.play(-1)
                     level_screen()
 
         screen.blit(fon, (0, 0))
@@ -179,6 +196,8 @@ def level_1():
                                                    40, 40))
         pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
 
+        enemies.draw(screen)
+        enemies.update()
         all_sprites.draw(screen)
         all_sprites.update()
         pygame.display.flip()
@@ -186,8 +205,14 @@ def level_1():
 
 
 def level_2():
-    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'),
+    fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
+    global SCORE
+    global sc
+    sc = 0
+    pygame.mixer.music.pause()
+    pygame.mixer.music.load(di + 'music.mp3')
+    pygame.mixer.music.play(-1)
     spaceship = Spaceship()
 
     while True:
@@ -201,7 +226,11 @@ def level_2():
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    SCORE += sc
                     spaceship.kill()
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.load(di + 'menu_music.mp3')
+                    pygame.mixer.music.play(-1)
                     level_screen()
 
         screen.blit(fon, (0, 0))
@@ -209,6 +238,8 @@ def level_2():
                                                    40, 40))
         pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
 
+        enemies.draw(screen)
+        enemies.update()
         all_sprites.draw(screen)
         all_sprites.update()
         pygame.display.flip()
@@ -216,8 +247,14 @@ def level_2():
 
 
 def level_3():
-    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'),
+    fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
+    global SCORE
+    global sc
+    sc = 0
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load(di + 'music.mp3')
+    pygame.mixer.music.play(-1)
     spaceship = Spaceship()
 
     while True:
@@ -231,7 +268,11 @@ def level_3():
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    SCORE += sc
                     spaceship.kill()
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.load(di + 'menu_music.mp3')
+                    pygame.mixer.music.play(-1)
                     level_screen()
 
         screen.blit(fon, (0, 0))
@@ -239,6 +280,8 @@ def level_3():
                                                    40, 40))
         pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
 
+        enemies.draw(screen)
+        enemies.update()
         all_sprites.draw(screen)
         all_sprites.update()
         pygame.display.flip()
@@ -246,8 +289,14 @@ def level_3():
 
 
 def level_4():
-    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'),
+    fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
+    global SCORE
+    global sc
+    sc = 0
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load(di + 'music.mp3')
+    pygame.mixer.music.play(-1)
     spaceship = Spaceship()
 
     while True:
@@ -261,7 +310,11 @@ def level_4():
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    SCORE += sc
                     spaceship.kill()
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.load(di + 'menu_music.mp3')
+                    pygame.mixer.music.play(-1)
                     level_screen()
 
         screen.blit(fon, (0, 0))
@@ -269,6 +322,8 @@ def level_4():
                                                    40, 40))
         pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
 
+        enemies.draw(screen)
+        enemies.update()
         all_sprites.draw(screen)
         all_sprites.update()
         pygame.display.flip()
@@ -276,9 +331,25 @@ def level_4():
 
 
 def level_5():
-    fon = pygame.transform.scale(load_image(f'Picture\\SpaceBackground3.png'),
+    fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
+    global SCORE
+    global sc
+    sc = 0
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load(di + 'music.mp3')
+    pygame.mixer.music.play(-1)
     spaceship = Spaceship()
+
+    m = Meteorite()
+    m.rect.x = 200
+    m.rect.y = 60
+    m.health = 0
+
+    c = Comet()
+    c.rect.x = 100
+    c.rect.y = 60
+    c.health = 0
 
     while True:
         keys = pygame.key.get_pressed()
@@ -291,7 +362,11 @@ def level_5():
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
+                    SCORE += sc
                     spaceship.kill()
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.load(di + 'menu_music.mp3')
+                    pygame.mixer.music.play(-1)
                     level_screen()
 
         screen.blit(fon, (0, 0))
@@ -299,6 +374,8 @@ def level_5():
                                                    40, 40))
         pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
 
+        enemies.draw(screen)
+        enemies.update()
         all_sprites.draw(screen)
         all_sprites.update()
         pygame.display.flip()
@@ -309,13 +386,14 @@ class Spaceship(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__(all_sprites)
         self.frames = []
-        self.cut_sheet(pygame.transform.scale(load_image("Picture\spaceship.png"),
+        self.cut_sheet(pygame.transform.scale(load_image("Picture/spaceship.png"),
                                               (450, 600)), 3, 4)
         self.cur_frame = 0
         self.image = self.frames[self.cur_frame]
         self.rect = self.rect.move(175, 440)
         self.k = 0
         self.speed = 30
+        self.mask = pygame.mask.from_surface(self.image)
 
     def cut_sheet(self, sheet, columns, rows):
         self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
@@ -335,23 +413,27 @@ class Spaceship(pygame.sprite.Sprite):
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
-        super().__init__(all_sprites)
+        super().__init__(enemies)
         self.health = 0
         self.frames = []
+        self.score = 0
         self.cur_frame = 0
         self.k = 0
         hits = ['hit1', 'hit2', 'hit3', 'hit4', 'hit5', 'hit6']
         self.hit = random.choice(hits)
         if self.hit == 'hit1' or self.hit == 'hit3':
-            self.cut_sheet(pygame.transform.scale(load_image(f"Picture\{self.hit}.png"),
+            self.cut_sheet(pygame.transform.scale(load_image(f"Picture/{self.hit}.png"),
                                                   (64, 320)), 1, 5)
             self.n = 25
         else:
-            self.cut_sheet(pygame.transform.scale(load_image(f"Picture\{self.hit}.png"),
+            self.cut_sheet(pygame.transform.scale(load_image(f"Picture/{self.hit}.png"),
                                                   (64, 448)), 1, 7)
             self.n = 35
 
     def update(self):
+        global sc
+        if self.health == 0 and self.k == 0:
+            sc += self.score
         if self.health == 0 and self.k < self.n:
             self.k += 1
             if self.k % 5 == 0:
@@ -359,6 +441,8 @@ class Enemy(pygame.sprite.Sprite):
                 self.image = self.frames[self.cur_frame]
         if self.k >= self.n:
             self.kill()
+        if self.health > 0:
+            move(self, 'down')
 
     def cut_sheet(self, sheet, columns, rows):
         self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
@@ -370,73 +454,90 @@ class Enemy(pygame.sprite.Sprite):
                     frame_location, self.rect.size)))
 
 
-def move(obj, rule):
-    if rule == 'left':
-        obj.rect.x -= obj.speed * 3 / FPS
-    if rule == 'right':
-        obj.rect.x += obj.speed * 3 / FPS
-    if rule == 'up':
-        obj.rect.y -= obj.speed * 3 / FPS
-    if rule == 'down':
-        obj.rect.y += obj.speed * 3 / FPS
-
-
 class Meteorite(Enemy):
     def __init__(self):
         super().__init__()
         self.health = 10
+        self.score = self.health
         self.speed = 35
-        self.image = pygame.transform.scale(load_image("Picture\Meteorite_1.png"), (100, 100))
+        self.image = pygame.transform.scale(load_image("Picture/Meteorite_1.png"), (100, 100))
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
 
 
-class Meteorite_Boss(Enemy):
+class MeteoriteBoss(Enemy):
     def __init__(self):
         super().__init__()
         self.health = 100
+        self.score = self.health
         self.speed = 15
-        self.image = load_image("Picture\Meteorite_2.png")
+        self.image = load_image("Picture/Meteorite_2.png")
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
 
 
 class Asteroid(Enemy):
     def __init__(self):
         super().__init__()
         self.health = 30
+        self.score = self.health
         self.speed = 20
-        self.image = load_image("Picture\Asteroid_1.png")
+        self.image = load_image("Picture/Asteroid_1.png")
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
 
 
-class Asteroid_Boss(Enemy):
+class AsteroidBoss(Enemy):
     def __init__(self):
         super().__init__()
         self.health = 150
+        self.score = self.health
         self.speed = 15
-        self.image = load_image("Picture\Asteroid_2.png")
+        self.image = load_image("Picture/Asteroid_2.png")
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
 
 
 class Comet(Enemy):
     def __init__(self):
         super().__init__()
         self.health = 20
+        self.score = self.health
         self.speed = 25
-        self.image = load_image("Picture\Comet.png")
+        self.image = load_image("Picture/Comet.png")
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
 
 
 class Satellite(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__(all_sprites)
         self.speed = 15
-        self.image = load_image("Picture\Satellite.png")
+        self.score = -60
+        self.image = load_image("Picture/Satellite.png")
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image)
+        self.mask = pygame.mask.from_surface(self.image)
+
+
+def move(obj, rule):
+    if rule == 'left':
+        obj.rect.x -= obj.speed * 3 / FPS
+    if rule == 'right':
+        obj.rect.x += obj.speed * 3 / FPS
+    if rule == 'down':
+        obj.rect.y += obj.speed * 3 / FPS
 
 
 pygame.display.set_caption('Космическая оборона')
-pygame_icon = pygame.image.load(f'data\\Picture\\icon.png')
+pygame_icon = pygame.image.load('data/Picture/icon.png')
 pygame.display.set_icon(pygame_icon)
+
+di = 'data/Music/'
+pygame.mixer.music.load(di + 'menu_music.mp3')
+pygame.mixer.music.play(-1)
+# pygame.mixer.Sound(filename)
+
 start_screen()
 
 terminate()
