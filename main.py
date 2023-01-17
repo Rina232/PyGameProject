@@ -11,6 +11,7 @@ WIDTH = 500
 HEIGHT = 600
 SCORE = 0
 sc = 0
+shots = []
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
@@ -47,7 +48,7 @@ def start_screen():
 
     main_text = "КОСМИЧЕСКАЯ ОБОРОНА"
     font = pygame.font.SysFont('MathSansBold', 35)
-    text = font.render(main_text, 1, pygame.Color(252, 242, 255))
+    text = font.render(main_text, True, pygame.Color(252, 242, 255))
     m_rect = text.get_rect()
     m_rect.top = 210
     m_rect.x = WIDTH // 2 - text.get_width() // 2
@@ -62,7 +63,7 @@ def start_screen():
     text_list = ["Правила игры", "Играть"]
     font = pygame.font.SysFont('MathSans', 27)
     for line in text_list:
-        text = font.render(line, 1, pygame.Color(97, 69, 107))
+        text = font.render(line, True, pygame.Color(97, 69, 107))
         m_rect = text.get_rect()
         m_rect.top = text_coord
         m_rect.x = WIDTH // 2 - text.get_width() // 2
@@ -96,7 +97,7 @@ def level_screen():
                                                40, 40))
     pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
     font = pygame.font.SysFont('MathSansBold', 30)
-    text = font.render(f'СЧЁТ: {SCORE}', 1, pygame.Color(252, 242, 255))
+    text = font.render(f'СЧЁТ: {SCORE}', True, pygame.Color(252, 242, 255))
     screen.blit(text, (215, 25))
 
     text_list = ["Уровень 1", "Уровень 2", "Уровень 3", "Уровень 4",
@@ -109,7 +110,7 @@ def level_screen():
         x = 60
         text_x = 73
         for j in range(3):
-            text = font.render(text_list[k], 1, pygame.Color(252, 242, 255))
+            text = font.render(text_list[k], True, pygame.Color(252, 242, 255))
             m_rect = text.get_rect()
             m_rect.y = text_y
             m_rect.x = text_x
@@ -165,13 +166,15 @@ def rules_screen():
 def level_1():
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
-    global SCORE
-    global sc
+    global sc, shots, SCORE
     sc = 0
+
     pygame.mixer.music.pause()
     pygame.mixer.music.load(di + 'music.mp3')
     pygame.mixer.music.play(-1)
     spaceship = Spaceship()
+
+    shots = []
 
     while True:
         keys = pygame.key.get_pressed()
@@ -189,7 +192,12 @@ def level_1():
                     pygame.mixer.music.stop()
                     pygame.mixer.music.load(di + 'menu_music.mp3')
                     pygame.mixer.music.play(-1)
+                    for i in enemies:
+                        i.kill()
                     level_screen()
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    shots.append(Shot(spaceship.rect.x, spaceship.rect.y))
+                    pygame.mixer.Sound('data/Sound/shot.wav')
 
         screen.blit(fon, (0, 0))
         pygame.draw.rect(screen, (252, 242, 255), (10, 10,
@@ -207,13 +215,15 @@ def level_1():
 def level_2():
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
-    global SCORE
-    global sc
+    global sc, shots, SCORE
     sc = 0
+
     pygame.mixer.music.pause()
     pygame.mixer.music.load(di + 'music.mp3')
     pygame.mixer.music.play(-1)
     spaceship = Spaceship()
+
+    shots = []
 
     while True:
         keys = pygame.key.get_pressed()
@@ -231,7 +241,12 @@ def level_2():
                     pygame.mixer.music.stop()
                     pygame.mixer.music.load(di + 'menu_music.mp3')
                     pygame.mixer.music.play(-1)
+                    for i in enemies:
+                        i.kill()
                     level_screen()
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    shots.append(Shot(spaceship.rect.x, spaceship.rect.y))
+                    pygame.mixer.Sound('data/Sound/shot.wav')
 
         screen.blit(fon, (0, 0))
         pygame.draw.rect(screen, (252, 242, 255), (10, 10,
@@ -249,13 +264,15 @@ def level_2():
 def level_3():
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
-    global SCORE
-    global sc
+    global sc, shots, SCORE
     sc = 0
+
     pygame.mixer.music.stop()
     pygame.mixer.music.load(di + 'music.mp3')
     pygame.mixer.music.play(-1)
     spaceship = Spaceship()
+
+    shots = []
 
     while True:
         keys = pygame.key.get_pressed()
@@ -273,7 +290,12 @@ def level_3():
                     pygame.mixer.music.stop()
                     pygame.mixer.music.load(di + 'menu_music.mp3')
                     pygame.mixer.music.play(-1)
+                    for i in enemies:
+                        i.kill()
                     level_screen()
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    shots.append(Shot(spaceship.rect.x, spaceship.rect.y))
+                    pygame.mixer.Sound('data/Sound/shot.wav')
 
         screen.blit(fon, (0, 0))
         pygame.draw.rect(screen, (252, 242, 255), (10, 10,
@@ -291,13 +313,15 @@ def level_3():
 def level_4():
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
-    global SCORE
-    global sc
+    global sc, shots, SCORE
     sc = 0
+
     pygame.mixer.music.stop()
     pygame.mixer.music.load(di + 'music.mp3')
     pygame.mixer.music.play(-1)
     spaceship = Spaceship()
+
+    shots = []
 
     while True:
         keys = pygame.key.get_pressed()
@@ -315,7 +339,12 @@ def level_4():
                     pygame.mixer.music.stop()
                     pygame.mixer.music.load(di + 'menu_music.mp3')
                     pygame.mixer.music.play(-1)
+                    for i in enemies:
+                        i.kill()
                     level_screen()
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    shots.append(Shot(spaceship.rect.x, spaceship.rect.y))
+                    pygame.mixer.Sound('data/Sound/shot.wav')
 
         screen.blit(fon, (0, 0))
         pygame.draw.rect(screen, (252, 242, 255), (10, 10,
@@ -333,9 +362,9 @@ def level_4():
 def level_5():
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
-    global SCORE
-    global sc
+    global sc, shots, SCORE
     sc = 0
+
     pygame.mixer.music.stop()
     pygame.mixer.music.load(di + 'music.mp3')
     pygame.mixer.music.play(-1)
@@ -344,12 +373,12 @@ def level_5():
     m = Meteorite()
     m.rect.x = 200
     m.rect.y = 60
-    m.health = 0
 
     c = Comet()
     c.rect.x = 100
     c.rect.y = 60
-    c.health = 0
+
+    shots = []
 
     while True:
         keys = pygame.key.get_pressed()
@@ -367,7 +396,12 @@ def level_5():
                     pygame.mixer.music.stop()
                     pygame.mixer.music.load(di + 'menu_music.mp3')
                     pygame.mixer.music.play(-1)
+                    for i in enemies:
+                        i.kill()
                     level_screen()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                shots.append(Shot(spaceship.rect.x, spaceship.rect.y))
+                pygame.mixer.Sound('data/Sound/shot.wav')
 
         screen.blit(fon, (0, 0))
         pygame.draw.rect(screen, (252, 242, 255), (10, 10,
@@ -432,8 +466,23 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self):
         global sc
+        global shots
+        poped_shots = []
+        if self.health:
+            for shot in shots:
+                if pygame.sprite.collide_mask(self, shot):
+                    shot.kill()
+                    self.health -= 10
+                else:
+                    poped_shots.append(shot)
+            shots = poped_shots
         if self.health == 0 and self.k == 0:
             sc += self.score
+            w = self.image.get_width()
+            h = self.image.get_height()
+            self.image = self.frames[self.cur_frame]
+            self.rect.x += w // 4
+            self.rect.y += h // 4
         if self.health == 0 and self.k < self.n:
             self.k += 1
             if self.k % 5 == 0:
@@ -520,6 +569,37 @@ class Satellite(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
 
 
+class Shot(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__(all_sprites)
+        self.frames = []
+        self.cut_sheet(load_image("Picture/shot.png"))
+        self.cur_frame = 0
+        self.k = 0
+        self.speed = 70
+        self.image = self.frames[self.cur_frame]
+        self.rect.x = x + 57
+        self.rect.y = y - 30
+        self.mask = pygame.mask.from_surface(self.image)
+
+    def cut_sheet(self, sheet):
+        self.rect = pygame.Rect(0, 0, sheet.get_width() // 5,
+                                sheet.get_height())
+        for i in range(5):
+            frame_location = (self.rect.w * i, 0)
+            self.frames.append(sheet.subsurface(pygame.Rect(
+                frame_location, self.rect.size)))
+
+    def update(self):
+        if self.rect.y < -63:
+            self.kill()
+        self.k += 1
+        if self.k % 5 == 0:
+            self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+            self.image = self.frames[self.cur_frame]
+        move(self, 'up')
+
+
 def move(obj, rule):
     if rule == 'left':
         obj.rect.x -= obj.speed * 3 / FPS
@@ -527,6 +607,8 @@ def move(obj, rule):
         obj.rect.x += obj.speed * 3 / FPS
     if rule == 'down':
         obj.rect.y += obj.speed * 3 / FPS
+    if rule == 'up':
+        obj.rect.y -= obj.speed * 3 / FPS
 
 
 pygame.display.set_caption('Космическая оборона')
@@ -536,7 +618,6 @@ pygame.display.set_icon(pygame_icon)
 di = 'data/Music/'
 pygame.mixer.music.load(di + 'menu_music.mp3')
 pygame.mixer.music.play(-1)
-# pygame.mixer.Sound(filename)
 
 start_screen()
 
