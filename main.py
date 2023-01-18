@@ -17,6 +17,7 @@ SCORE4 = 0
 SCORE5 = 0
 SHOTS = []
 
+# Открытие данных и их считывание
 with open('score.txt', 'a') as f1:
     with open('score.txt', 'r') as f2:
         data = f2.readlines()
@@ -94,6 +95,9 @@ def load_level(en, k):
         m = Satellite()
         m.rect.x = i[1]
         m.rect.y = -100
+
+# Пример работы функций экранов прокомментирован
+# в функции level_1()
 
 
 def start_screen():
@@ -202,6 +206,7 @@ def level_screen():
 
 
 def rules_screen():
+    """Функция отрисовки и работы окна с правилами"""
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'), (WIDTH, HEIGHT))
     screen.blit(fon, (0, 0))
     pygame.draw.rect(screen, (252, 242, 255), (10, 10,
@@ -246,29 +251,40 @@ def rules_screen():
 
 
 def level_1():
+    """Функция отрисовки и работы 1 уровня"""
+    # Загрузка фона
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
+    # Подготовка перед работой с глобальными пременными
     global sc, SHOTS, SCORE, SCORE1
     sc = 0
+    SHOTS = []
 
+    # Настройка музыки
     pygame.mixer.music.pause()
     pygame.mixer.music.load(di + 'music.mp3')
     pygame.mixer.music.play(-1)
     spaceship = Spaceship()
 
-    SHOTS = []
+    # Список из кортежей вида: (цель на уровне, её координата по иксу)
     en = [('Comet', 100), ('Meteorite', 200), ('Comet', 300),
           ('Asteroid', 75), ('Satellite', 100), ('Comet', 200),
           ('Meteorite', 275), ('Comet', 350), ('Asteroid', 250),
           ('Meteorite', 200), ('Comet', 300), ('Asteroid', 150),
           ('Satellite', 300), ('Comet', 200), ('Meteorite', 275),
           ('Comet', 350), ('Asteroid', 250)]
+
+    # Создание своего события по таймингу
     myeventtype = pygame.USEREVENT + 1
     pygame.time.set_timer(myeventtype, 2000)
     k = 0
 
     while True:
         keys = pygame.key.get_pressed()
+        # Движение при нажатии на кнопки.
+        # Его мы решили реализовать не в общем
+        # с другими event цикле, чтобы корабль
+        # мог двигаться с зажатыми кнопкой
         if keys[pygame.K_LEFT] and spaceship.rect.x > 5\
                 and not spaceship.fl:
             move(spaceship, 'left')
@@ -276,11 +292,14 @@ def level_1():
                 and not spaceship.fl:
             move(spaceship, 'right')
         for event in pygame.event.get():
+            # Обработка других event
             if event.type == pygame.QUIT:
+                # Отключение pygame
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50\
                         and not spaceship.fl:
+                    # Нажатие кнопки перехода в меню уровней
                     spaceship.kill()
                     pygame.mixer.music.stop()
                     pygame.mixer.music.load(di + 'menu_music.mp3')
@@ -292,6 +311,8 @@ def level_1():
                     level_screen()
                 if 175 <= event.pos[0] <= 325 and 300 <= event.pos[1] <= 350\
                         and spaceship.fl:
+                    # Нажатие кнопки перехода в меню уровней при завершении
+                    # уровня
                     spaceship.kill()
                     pygame.mixer.music.stop()
                     pygame.mixer.music.load(di + 'menu_music.mp3')
@@ -303,13 +324,16 @@ def level_1():
                     level_screen()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE\
                     and not spaceship.fl:
+                # Создание объектов-выстрелов при нажатие пробела
                 SHOTS.append(Shot(spaceship.rect.x, spaceship.rect.y))
                 s.play()
             elif event.type == myeventtype and k < len(en)\
                     and not spaceship.fl:
+                # Обработка event по таймингу
                 load_level(en, k)
                 k += 1
 
+        # Создание интерфейса
         screen.blit(fon, (0, 0))
         pygame.draw.rect(screen, (252, 242, 255), (10, 10,
                                                    40, 40))
@@ -323,9 +347,13 @@ def level_1():
         enemies.draw(screen)
         all_sprites.draw(screen)
         if not spaceship.fl:
+            # Обновление состояния целей и корабля
+            # с предварительной проверкой отсутствия
+            # касания целей и корабля
             enemies.update()
             all_sprites.update()
         else:
+            # При касании создаётся интерфейс "Поражение"
             pygame.draw.rect(screen, (97, 69, 107), (100, 200,
                                                      300, 200))
             pygame.draw.rect(screen, (252, 242, 255), (175, 300,
@@ -337,6 +365,10 @@ def level_1():
             text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
             screen.blit(text, (205, 315))
         if not enemies and k == len(en):
+            # В той ситуации, когда спрайтов на уровне уже нет,
+            # и все спрайты из списка en инициализированы
+            # создаётся интерфейс "Победа" и сохраняются
+            # счёт уровня в score.txt
             SCORE += sc - SCORE1
             SCORE1 = sc
             with open('score.txt', 'w') as f:
@@ -358,6 +390,7 @@ def level_1():
 
 
 def level_2():
+    """Функция отрисовки и работы 2 уровня"""
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
     global sc, SHOTS, SCORE, SCORE2
@@ -473,6 +506,7 @@ def level_2():
 
 
 def level_3():
+    """Функция отрисовки и работы 3 уровня"""
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
     global sc, SHOTS, SCORE, SCORE3
@@ -588,6 +622,7 @@ def level_3():
 
 
 def level_4():
+    """Функция отрисовки и работы 4 уровня"""
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
     global sc, SHOTS, SCORE, SCORE4
@@ -708,6 +743,7 @@ def level_4():
 
 
 def level_5():
+    """Функция отрисовки и работы 5 уровня"""
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
     global sc, SHOTS, SCORE, SCORE5
@@ -832,6 +868,7 @@ def level_5():
 
 
 class Spaceship(pygame.sprite.Sprite):
+    """Класс создания и размещения на окне космического корабля"""
     def __init__(self):
         super().__init__(all_sprites)
         self.frames = []
@@ -856,6 +893,7 @@ class Spaceship(pygame.sprite.Sprite):
                     frame_location, self.rect.size)))
 
     def update(self):
+        """Функция для обновления состояния корабля"""
         for i in enemies:
             if pygame.sprite.collide_mask(self, i):
                 self.fl = 1
@@ -866,7 +904,7 @@ class Spaceship(pygame.sprite.Sprite):
 
 
 class Enemy(pygame.sprite.Sprite):
-    """Класс для всех целей"""
+    """Класс для создания всех целей и их расположения"""
     def __init__(self):
         super().__init__(enemies)
         self.health = 0
@@ -886,6 +924,7 @@ class Enemy(pygame.sprite.Sprite):
             self.n = 35
 
     def update(self):
+        """Функция для обновления состояния целей"""
         global sc
         global SHOTS
         popped_shots = []
@@ -1029,7 +1068,9 @@ class Shot(pygame.sprite.Sprite):
                 frame_location, self.rect.size)))
 
     def update(self):
-        if self.rect.y < -63:
+        """Функция для обновления состояния выстрелов"""
+        if self.rect.y < 0:
+            SHOTS.remove(self)
             self.kill()
         self.k += 1
         if self.k % 5 == 0:
@@ -1054,6 +1095,7 @@ pygame.display.set_caption('Космическая оборона')
 pygame_icon = pygame.image.load('data/Picture/icon.png')
 pygame.display.set_icon(pygame_icon)
 
+# Настройка музыки
 di = 'data/Music/'
 pygame.mixer.music.load(di + 'menu_music.mp3')
 pygame.mixer.music.play(-1)
