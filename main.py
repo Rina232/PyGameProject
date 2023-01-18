@@ -10,16 +10,32 @@ FPS = 30
 WIDTH = 500
 HEIGHT = 600
 sc = 0
-shots = []
+SCORE1 = 0
+SCORE2 = 0
+SCORE3 = 0
+SCORE4 = 0
+SCORE5 = 0
+SHOTS = []
 
 with open('score.txt', 'a') as f1:
     with open('score.txt', 'r') as f2:
-        data = f2.read()
+        data = f2.readlines()
         if not data:
             SCORE = 0
-            f1.write('0')
+            SCORE1 = 0
+            SCORE2 = 0
+            SCORE3 = 0
+            SCORE4 = 0
+            SCORE5 = 0
+            f1.write('0\n0\n0\n0\n0\n0')
+
         else:
-            SCORE = int(data)
+            SCORE = int(data[0])
+            SCORE1 = int(data[1])
+            SCORE2 = int(data[2])
+            SCORE3 = int(data[3])
+            SCORE4 = int(data[4])
+            SCORE5 = int(data[5])
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
@@ -118,8 +134,6 @@ def start_screen():
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                with open('score.txt', 'w') as f:
-                    f.write(str(SCORE))
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if x <= event.pos[0] <= x + w:
@@ -140,7 +154,7 @@ def level_screen():
     pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
     font = pygame.font.SysFont('MathSansBold', 30)
     text = font.render(f'СЧЁТ: {SCORE}', True, pygame.Color(252, 242, 255))
-    screen.blit(text, (215, 25))
+    screen.blit(text, (WIDTH // 2 - text.get_width() // 2, 25))
 
     text_list = ["Уровень 1", "Уровень 2", "Уровень 3", "Уровень 4",
                  "Уровень 5", "Скоро...", "Скоро...", "Скоро...", "Скоро..."]
@@ -197,8 +211,6 @@ def rules_screen():
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                with open('score.txt', 'w') as f:
-                    f.write(str(SCORE))
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50:
@@ -210,7 +222,7 @@ def rules_screen():
 def level_1():
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
-    global sc, shots, SCORE
+    global sc, SHOTS, SCORE, SCORE1
     sc = 0
 
     pygame.mixer.music.pause()
@@ -218,7 +230,7 @@ def level_1():
     pygame.mixer.music.play(-1)
     spaceship = Spaceship()
 
-    shots = []
+    SHOTS = []
     en = [('Comet', 100), ('Meteorite', 200), ('Comet', 300),
           ('Asteroid', 75), ('Satellite', 100), ('Comet', 200),
           ('Meteorite', 275), ('Comet', 350), ('Asteroid', 250),
@@ -239,8 +251,6 @@ def level_1():
             move(spaceship, 'right')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                with open('score.txt', 'w') as f:
-                    f.write(str(SCORE))
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50\
@@ -251,7 +261,7 @@ def level_1():
                     pygame.mixer.music.play(-1)
                     for i in enemies:
                         i.kill()
-                    for i in shots:
+                    for i in SHOTS:
                         i.kill()
                     level_screen()
                 if 175 <= event.pos[0] <= 325 and 300 <= event.pos[1] <= 350\
@@ -262,12 +272,12 @@ def level_1():
                     pygame.mixer.music.play(-1)
                     for i in enemies:
                         i.kill()
-                    for i in shots:
+                    for i in SHOTS:
                         i.kill()
                     level_screen()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE\
                     and not spaceship.fl:
-                shots.append(Shot(spaceship.rect.x, spaceship.rect.y))
+                SHOTS.append(Shot(spaceship.rect.x, spaceship.rect.y))
                 s.play()
             elif event.type == myeventtype and k < len(en)\
                     and not spaceship.fl:
@@ -277,6 +287,11 @@ def level_1():
         screen.blit(fon, (0, 0))
         pygame.draw.rect(screen, (252, 242, 255), (10, 10,
                                                    40, 40))
+        pygame.draw.rect(screen, (252, 242, 255), (430, 10,
+                                                   60, 40))
+        font = pygame.font.SysFont('MathSansBold', 25)
+        text = font.render(f'{sc}', True, pygame.Color(97, 69, 107))
+        screen.blit(text, (460 - text.get_width() // 2, 23))
         pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
 
         enemies.draw(screen)
@@ -295,6 +310,23 @@ def level_1():
             font = pygame.font.SysFont('MathSansBold', 27)
             text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
             screen.blit(text, (205, 315))
+        if not enemies and k > 0:
+            SCORE += sc - SCORE1
+            SCORE1 = sc
+            with open('score.txt', 'w') as f:
+                f.write(f'{str(SCORE)}\n{str(SCORE1)}\n{str(SCORE2)}'
+                        f'\n{str(SCORE3)}\n{str(SCORE4)}\n{str(SCORE5)}')
+            spaceship.fl = 1
+            pygame.draw.rect(screen, (97, 69, 107), (100, 200,
+                                                     300, 200))
+            pygame.draw.rect(screen, (252, 242, 255), (175, 300,
+                                                       150, 50))
+            font = pygame.font.SysFont('MathSansBold', 30)
+            text = font.render('ПОБЕДА', True, pygame.Color(252, 242, 255))
+            screen.blit(text, (205, 230))
+            font = pygame.font.SysFont('MathSansBold', 27)
+            text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
+            screen.blit(text, (205, 315))
         pygame.display.flip()
         clock.tick(FPS)
 
@@ -302,7 +334,7 @@ def level_1():
 def level_2():
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
-    global sc, shots, SCORE
+    global sc, SHOTS, SCORE, SCORE2
     sc = 0
 
     pygame.mixer.music.pause()
@@ -310,7 +342,7 @@ def level_2():
     pygame.mixer.music.play(-1)
     spaceship = Spaceship()
 
-    shots = []
+    SHOTS = []
     en = [('Asteroid', 200), ('Comet', 100), ('Meteorite', 150),
           ('Comet', 300), ('Meteorite', 250), ('Satellite', 300),
           ('Comet', 280), ('Asteroid', 50), ('Satellite', 100),
@@ -334,8 +366,6 @@ def level_2():
             move(spaceship, 'right')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                with open('score.txt', 'w') as f:
-                    f.write(str(SCORE))
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50\
@@ -346,7 +376,7 @@ def level_2():
                     pygame.mixer.music.play(-1)
                     for i in enemies:
                         i.kill()
-                    for i in shots:
+                    for i in SHOTS:
                         i.kill()
                     level_screen()
                 if 175 <= event.pos[0] <= 325 and 300 <= event.pos[1] <= 350\
@@ -357,12 +387,12 @@ def level_2():
                     pygame.mixer.music.play(-1)
                     for i in enemies:
                         i.kill()
-                    for i in shots:
+                    for i in SHOTS:
                         i.kill()
                     level_screen()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE\
                     and not spaceship.fl:
-                shots.append(Shot(spaceship.rect.x, spaceship.rect.y))
+                SHOTS.append(Shot(spaceship.rect.x, spaceship.rect.y))
                 s.play()
             elif event.type == myeventtype and k < len(en)\
                     and not spaceship.fl:
@@ -372,6 +402,11 @@ def level_2():
         screen.blit(fon, (0, 0))
         pygame.draw.rect(screen, (252, 242, 255), (10, 10,
                                                    40, 40))
+        pygame.draw.rect(screen, (252, 242, 255), (430, 10,
+                                                   60, 40))
+        font = pygame.font.SysFont('MathSansBold', 25)
+        text = font.render(f'{sc}', True, pygame.Color(97, 69, 107))
+        screen.blit(text, (460 - text.get_width() // 2, 23))
         pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
 
         enemies.draw(screen)
@@ -387,6 +422,23 @@ def level_2():
             font = pygame.font.SysFont('MathSansBold', 30)
             text = font.render('ПОРАЖЕНИЕ', True, pygame.Color(252, 242, 255))
             screen.blit(text, (185, 230))
+            font = pygame.font.SysFont('MathSansBold', 27)
+            text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
+            screen.blit(text, (205, 315))
+        if not enemies and k > 0:
+            SCORE += sc - SCORE2
+            SCORE2 = sc
+            with open('score.txt', 'w') as f:
+                f.write(f'{str(SCORE)}\n{str(SCORE1)}\n{str(SCORE2)}'
+                        f'\n{str(SCORE3)}\n{str(SCORE4)}\n{str(SCORE5)}')
+            spaceship.fl = 1
+            pygame.draw.rect(screen, (97, 69, 107), (100, 200,
+                                                     300, 200))
+            pygame.draw.rect(screen, (252, 242, 255), (175, 300,
+                                                       150, 50))
+            font = pygame.font.SysFont('MathSansBold', 30)
+            text = font.render('ПОБЕДА', True, pygame.Color(252, 242, 255))
+            screen.blit(text, (205, 230))
             font = pygame.font.SysFont('MathSansBold', 27)
             text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
             screen.blit(text, (205, 315))
@@ -397,7 +449,7 @@ def level_2():
 def level_3():
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
-    global sc, shots, SCORE
+    global sc, SHOTS, SCORE, SCORE3
     sc = 0
 
     pygame.mixer.music.stop()
@@ -405,7 +457,7 @@ def level_3():
     pygame.mixer.music.play(-1)
     spaceship = Spaceship()
 
-    shots = []
+    SHOTS = []
     en = [('Meteorite', 200), ('MeteoriteBoss', 100)]
     myeventtype = pygame.USEREVENT + 1
     pygame.time.set_timer(myeventtype, 2000)
@@ -421,8 +473,6 @@ def level_3():
             move(spaceship, 'right')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                with open('score.txt', 'w') as f:
-                    f.write(str(SCORE))
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50 \
@@ -433,7 +483,7 @@ def level_3():
                     pygame.mixer.music.play(-1)
                     for i in enemies:
                         i.kill()
-                    for i in shots:
+                    for i in SHOTS:
                         i.kill()
                     level_screen()
                 if 175 <= event.pos[0] <= 325 and 300 <= event.pos[1] <= 350\
@@ -444,12 +494,12 @@ def level_3():
                     pygame.mixer.music.play(-1)
                     for i in enemies:
                         i.kill()
-                    for i in shots:
+                    for i in SHOTS:
                         i.kill()
                     level_screen()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE\
                     and not spaceship.fl:
-                shots.append(Shot(spaceship.rect.x, spaceship.rect.y))
+                SHOTS.append(Shot(spaceship.rect.x, spaceship.rect.y))
                 s.play()
             elif event.type == myeventtype and k < len(en)\
                     and not spaceship.fl:
@@ -459,6 +509,11 @@ def level_3():
         screen.blit(fon, (0, 0))
         pygame.draw.rect(screen, (252, 242, 255), (10, 10,
                                                    40, 40))
+        pygame.draw.rect(screen, (252, 242, 255), (430, 10,
+                                                   60, 40))
+        font = pygame.font.SysFont('MathSansBold', 25)
+        text = font.render(f'{sc}', True, pygame.Color(97, 69, 107))
+        screen.blit(text, (460 - text.get_width() // 2, 23))
         pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
 
         enemies.draw(screen)
@@ -477,6 +532,23 @@ def level_3():
             font = pygame.font.SysFont('MathSansBold', 27)
             text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
             screen.blit(text, (205, 315))
+        if not enemies and k > 0:
+            SCORE += sc - SCORE3
+            SCORE3 = sc
+            with open('score.txt', 'w') as f:
+                f.write(f'{str(SCORE)}\n{str(SCORE1)}\n{str(SCORE2)}'
+                        f'\n{str(SCORE3)}\n{str(SCORE4)}\n{str(SCORE5)}')
+            spaceship.fl = 1
+            pygame.draw.rect(screen, (97, 69, 107), (100, 200,
+                                                     300, 200))
+            pygame.draw.rect(screen, (252, 242, 255), (175, 300,
+                                                       150, 50))
+            font = pygame.font.SysFont('MathSansBold', 30)
+            text = font.render('ПОБЕДА', True, pygame.Color(252, 242, 255))
+            screen.blit(text, (205, 230))
+            font = pygame.font.SysFont('MathSansBold', 27)
+            text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
+            screen.blit(text, (205, 315))
         pygame.display.flip()
         clock.tick(FPS)
 
@@ -484,7 +556,7 @@ def level_3():
 def level_4():
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
-    global sc, shots, SCORE
+    global sc, SHOTS, SCORE, SCORE4
     sc = 0
 
     pygame.mixer.music.stop()
@@ -492,7 +564,7 @@ def level_4():
     pygame.mixer.music.play(-1)
     spaceship = Spaceship()
 
-    shots = []
+    SHOTS = []
     en = [('Meteorite', 200), ('MeteoriteBoss', 100)]
     myeventtype = pygame.USEREVENT + 1
     pygame.time.set_timer(myeventtype, 2000)
@@ -508,8 +580,6 @@ def level_4():
             move(spaceship, 'right')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                with open('score.txt', 'w') as f:
-                    f.write(str(SCORE))
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50\
@@ -520,7 +590,7 @@ def level_4():
                     pygame.mixer.music.play(-1)
                     for i in enemies:
                         i.kill()
-                    for i in shots:
+                    for i in SHOTS:
                         i.kill()
                     level_screen()
                 if 175 <= event.pos[0] <= 325 and 300 <= event.pos[1] <= 350\
@@ -531,12 +601,12 @@ def level_4():
                     pygame.mixer.music.play(-1)
                     for i in enemies:
                         i.kill()
-                    for i in shots:
+                    for i in SHOTS:
                         i.kill()
                     level_screen()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE\
                     and not spaceship.fl:
-                shots.append(Shot(spaceship.rect.x, spaceship.rect.y))
+                SHOTS.append(Shot(spaceship.rect.x, spaceship.rect.y))
                 s.play()
             elif event.type == myeventtype and k < len(en)\
                     and not spaceship.fl:
@@ -546,6 +616,11 @@ def level_4():
         screen.blit(fon, (0, 0))
         pygame.draw.rect(screen, (252, 242, 255), (10, 10,
                                                    40, 40))
+        pygame.draw.rect(screen, (252, 242, 255), (430, 10,
+                                                   60, 40))
+        font = pygame.font.SysFont('MathSansBold', 25)
+        text = font.render(f'{sc}', True, pygame.Color(97, 69, 107))
+        screen.blit(text, (460 - text.get_width() // 2, 23))
         pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
 
         enemies.draw(screen)
@@ -564,6 +639,23 @@ def level_4():
             font = pygame.font.SysFont('MathSansBold', 27)
             text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
             screen.blit(text, (205, 315))
+        if not enemies and k > 0:
+            SCORE += sc - SCORE4
+            SCORE4 = sc
+            with open('score.txt', 'w') as f:
+                f.write(f'{str(SCORE)}\n{str(SCORE1)}\n{str(SCORE2)}'
+                        f'\n{str(SCORE3)}\n{str(SCORE4)}\n{str(SCORE5)}')
+            spaceship.fl = 1
+            pygame.draw.rect(screen, (97, 69, 107), (100, 200,
+                                                     300, 200))
+            pygame.draw.rect(screen, (252, 242, 255), (175, 300,
+                                                       150, 50))
+            font = pygame.font.SysFont('MathSansBold', 30)
+            text = font.render('ПОБЕДА', True, pygame.Color(252, 242, 255))
+            screen.blit(text, (205, 230))
+            font = pygame.font.SysFont('MathSansBold', 27)
+            text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
+            screen.blit(text, (205, 315))
         pygame.display.flip()
         clock.tick(FPS)
 
@@ -571,7 +663,7 @@ def level_4():
 def level_5():
     fon = pygame.transform.scale(load_image(f'Picture/SpaceBackground3.png'),
                                  (WIDTH, HEIGHT))
-    global sc, shots, SCORE
+    global sc, SHOTS, SCORE, SCORE5
     sc = 0
 
     pygame.mixer.music.stop()
@@ -579,7 +671,7 @@ def level_5():
     pygame.mixer.music.play(-1)
     spaceship = Spaceship()
 
-    shots = []
+    SHOTS = []
     en = [('Meteorite', 200), ('Satellite', 100)]
     myeventtype = pygame.USEREVENT + 1
     pygame.time.set_timer(myeventtype, 1000)
@@ -595,8 +687,6 @@ def level_5():
             move(spaceship, 'right')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                with open('score.txt', 'w') as f:
-                    f.write(str(SCORE))
                 terminate()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if 10 <= event.pos[0] <= 50 and 10 <= event.pos[1] <= 50\
@@ -607,7 +697,7 @@ def level_5():
                     pygame.mixer.music.play(-1)
                     for i in enemies:
                         i.kill()
-                    for i in shots:
+                    for i in SHOTS:
                         i.kill()
                     level_screen()
                 if 175 <= event.pos[0] <= 325 and 300 <= event.pos[1] <= 350\
@@ -618,12 +708,12 @@ def level_5():
                     pygame.mixer.music.play(-1)
                     for i in enemies:
                         i.kill()
-                    for i in shots:
+                    for i in SHOTS:
                         i.kill()
                     level_screen()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE\
                     and not spaceship.fl:
-                shots.append(Shot(spaceship.rect.x, spaceship.rect.y))
+                SHOTS.append(Shot(spaceship.rect.x, spaceship.rect.y))
                 s.play()
             elif event.type == myeventtype and k < len(en)\
                     and not spaceship.fl:
@@ -633,6 +723,11 @@ def level_5():
         screen.blit(fon, (0, 0))
         pygame.draw.rect(screen, (252, 242, 255), (10, 10,
                                                    40, 40))
+        pygame.draw.rect(screen, (252, 242, 255), (430, 10,
+                                                   60, 40))
+        font = pygame.font.SysFont('MathSansBold', 25)
+        text = font.render(f'{sc}', True, pygame.Color(97, 69, 107))
+        screen.blit(text, (460 - text.get_width() // 2, 23))
         pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
 
         enemies.draw(screen)
@@ -648,6 +743,23 @@ def level_5():
             font = pygame.font.SysFont('MathSansBold', 30)
             text = font.render('ПОРАЖЕНИЕ', True, pygame.Color(252, 242, 255))
             screen.blit(text, (185, 230))
+            font = pygame.font.SysFont('MathSansBold', 27)
+            text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
+            screen.blit(text, (205, 315))
+        if not enemies and k > 0:
+            SCORE += sc - SCORE5
+            SCORE5 = sc
+            with open('score.txt', 'w') as f:
+                f.write(f'{str(SCORE)}\n{str(SCORE1)}\n{str(SCORE2)}'
+                        f'\n{str(SCORE3)}\n{str(SCORE4)}\n{str(SCORE5)}')
+            spaceship.fl = 1
+            pygame.draw.rect(screen, (97, 69, 107), (100, 200,
+                                                     300, 200))
+            pygame.draw.rect(screen, (252, 242, 255), (175, 300,
+                                                       150, 50))
+            font = pygame.font.SysFont('MathSansBold', 30)
+            text = font.render('ПОБЕДА', True, pygame.Color(252, 242, 255))
+            screen.blit(text, (205, 230))
             font = pygame.font.SysFont('MathSansBold', 27)
             text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
             screen.blit(text, (205, 315))
@@ -711,19 +823,21 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self):
         global sc
-        global shots
-        poped_shots = []
+        global SHOTS
+        popped_shots = []
         if self.health:
-            for shot in shots:
+            for shot in SHOTS:
                 if pygame.sprite.collide_mask(self, shot):
                     shot.kill()
                     self.health -= 10
                 else:
-                    poped_shots.append(shot)
-            shots = poped_shots
+                    popped_shots.append(shot)
+            SHOTS = popped_shots
         if self.health == 0 and self.k == 0:
             if sc + self.score >= 0:
                 sc += self.score
+            else:
+                sc = 0
             w = self.image.get_width()
             h = self.image.get_height()
             self.image = self.frames[self.cur_frame]
@@ -739,7 +853,10 @@ class Enemy(pygame.sprite.Sprite):
         if self.k >= self.n:
             self.kill()
         if self.health > 0:
-            move(self, 'down')
+            if self.rect.y <= HEIGHT:
+                move(self, 'down')
+            else:
+                self.kill()
 
     def cut_sheet(self, sheet, columns, rows):
         """Функция для деления изображения на фреймы и их последующего анимирования"""
@@ -825,6 +942,7 @@ class Satellite(Enemy):
 
 
 class Shot(pygame.sprite.Sprite):
+    """Класс для выстрелов"""
     def __init__(self, x, y):
         super().__init__(all_sprites)
         self.frames = []
@@ -857,6 +975,7 @@ class Shot(pygame.sprite.Sprite):
 
 
 def move(obj, rule):
+    """Функция для движения всех объектов"""
     if rule == 'left':
         obj.rect.x -= obj.speed * 3 / FPS
     if rule == 'right':
