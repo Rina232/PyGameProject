@@ -208,6 +208,32 @@ def rules_screen():
                                                40, 40))
     pygame.draw.polygon(screen, (97, 69, 107), [(20, 30), (35, 40), (35, 20)], 3)
 
+    pygame.draw.rect(screen, (97, 69, 107), (50, 100,
+                                             400, 410))
+
+    text_coord = 115
+    text_list = ["Вам предстоит расчистить путь",
+                 " для своего космического корабля от",
+                 " различных препятствий: комет,",
+                 " астероидов, метеоритов.",
+                 "У каждых целей разная степень",
+                 "живучести, скорость и очки",
+                 "за её уничтожение",
+                 "Если вы попадёте по спутнику,",
+                 "то счёт понизится.",
+                 "Не забудьте уворачиваться от целей.",
+                 "Стрелочки ВПРАВО и ВЛЕВО - передвижение",
+                 " космического корабля;",
+                 "ПРОБЕЛ - использование пушки."]
+    font = pygame.font.SysFont('MathSans', 23)
+    for line in text_list:
+        text = font.render(line, True, pygame.Color(252, 242, 255))
+        m_rect = text.get_rect()
+        m_rect.top = text_coord
+        m_rect.x = 75
+        screen.blit(text, m_rect)
+        text_coord += 30
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -310,7 +336,7 @@ def level_1():
             font = pygame.font.SysFont('MathSansBold', 27)
             text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
             screen.blit(text, (205, 315))
-        if not enemies and k > 0:
+        if not enemies and k == len(en):
             SCORE += sc - SCORE1
             SCORE1 = sc
             with open('score.txt', 'w') as f:
@@ -425,7 +451,7 @@ def level_2():
             font = pygame.font.SysFont('MathSansBold', 27)
             text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
             screen.blit(text, (205, 315))
-        if not enemies and k > 0:
+        if not enemies and k == len(en):
             SCORE += sc - SCORE2
             SCORE2 = sc
             with open('score.txt', 'w') as f:
@@ -458,7 +484,15 @@ def level_3():
     spaceship = Spaceship()
 
     SHOTS = []
-    en = [('Meteorite', 200), ('MeteoriteBoss', 100)]
+    en = [('Meteorite', 200), ('Comet', 100), ('Comet', 300),
+          ('Meteorite', 200), ('Asteroid', 300), ('Asteroid', 250),
+          ('Asteroid', 200), ('Asteroid', 150), ('Asteroid', 100),
+          ('Satellite', 150), ('Satellite', 350), ('Comet', 200),
+          ('Meteorite', 300), ('Asteroid', 100), ('Comet', 80),
+          ('', 0), ('Asteroid', 200), ('Meteorite', 100),
+          ('Comet', 150), ('Comet', 300), ('Meteorite', 200),
+          ('', 0), ('Satellite', 150),
+          ('Satellite', 350), ('', 0), ('MeteoriteBoss', 100)]
     myeventtype = pygame.USEREVENT + 1
     pygame.time.set_timer(myeventtype, 2000)
     k = 0
@@ -532,7 +566,7 @@ def level_3():
             font = pygame.font.SysFont('MathSansBold', 27)
             text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
             screen.blit(text, (205, 315))
-        if not enemies and k > 0:
+        if not enemies and k == len(en):
             SCORE += sc - SCORE3
             SCORE3 = sc
             with open('score.txt', 'w') as f:
@@ -565,7 +599,20 @@ def level_4():
     spaceship = Spaceship()
 
     SHOTS = []
-    en = [('Meteorite', 200), ('MeteoriteBoss', 100)]
+    en = [('Comet', 100), ('Meteorite', 200), ('Comet', 300),
+          ('Asteroid', 75), ('Satellite', 100), ('Comet', 200),
+          ('Meteorite', 275), ('Comet', 350), ('Asteroid', 250),
+          ('Meteorite', 200), ('Comet', 300), ('Asteroid', 150),
+          ('Satellite', 300), ('Asteroid', 250), ('Meteorite', 200),
+          ('Comet', 220), ('Asteroid', 200), ('Comet', 100),
+          ('Meteorite', 150), ('Comet', 300), ('Meteorite', 250),
+          ('Satellite', 300), ('Comet', 350), ('Asteroid', 50),
+          ('Meteorite', 250), ('Comet', 175), ('Meteorite', 200),
+          ('Comet', 150), ('Comet', 100), ('Meteorite', 200), ('Comet', 300),
+          ('Asteroid', 75), ('Satellite', 100), ('Comet', 200),
+          ('Meteorite', 275), ('Comet', 350), ('Asteroid', 250),
+          ('Meteorite', 200), ('Comet', 300), ('Asteroid', 150),
+          ('Satellite', 300), ('Asteroid', 250)]
     myeventtype = pygame.USEREVENT + 1
     pygame.time.set_timer(myeventtype, 2000)
     k = 0
@@ -639,7 +686,7 @@ def level_4():
             font = pygame.font.SysFont('MathSansBold', 27)
             text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
             screen.blit(text, (205, 315))
-        if not enemies and k > 0:
+        if not enemies and k == len(en):
             SCORE += sc - SCORE4
             SCORE4 = sc
             with open('score.txt', 'w') as f:
@@ -672,9 +719,26 @@ def level_5():
     spaceship = Spaceship()
 
     SHOTS = []
-    en = [('Meteorite', 200), ('Satellite', 100)]
+    en = [('Comet', 100), ('Meteorite', 200), ('Comet', 300),
+          ('Asteroid', 75), ('Satellite', 100), ('Comet', 200),
+          ('Meteorite', 275), ('Comet', 350), ('Asteroid', 250),
+          ('Meteorite', 200), ('Comet', 300), ('Asteroid', 150),
+          ('Satellite', 300), ('Asteroid', 250), ('Meteorite', 200),
+          ('Comet', 220), ('Asteroid', 200), ('Comet', 100),
+          ('Meteorite', 150), ('Comet', 300), ('Meteorite', 250),
+          ('Satellite', 300), ('Comet', 350), ('Asteroid', 50),
+          ('Comet', 175), ('Meteorite', 200),
+          ('Asteroid', 100), ('Comet', 80),
+          ('', 0), ('Asteroid', 200), ('Meteorite', 100),
+          ('Comet', 150), ('Comet', 300), ('Meteorite', 200),
+          ('', 0), ('Satellite', 150),
+          ('Satellite', 350), ('', 0), ('MeteoriteBoss', 100),
+          ('Meteorite', 275), ('Comet', 350), ('Asteroid', 250),
+          ('Meteorite', 200), ('Comet', 300), ('Asteroid', 150),
+          ('Satellite', 300), ('Asteroid', 250), ('Satellite', 75),
+          ('AsteroidBoss', 200)]
     myeventtype = pygame.USEREVENT + 1
-    pygame.time.set_timer(myeventtype, 1000)
+    pygame.time.set_timer(myeventtype, 2000)
     k = 0
 
     while True:
@@ -746,7 +810,7 @@ def level_5():
             font = pygame.font.SysFont('MathSansBold', 27)
             text = font.render('Вернуться', True, pygame.Color(97, 69, 107))
             screen.blit(text, (205, 315))
-        if not enemies and k > 0:
+        if not enemies and k == len(en):
             SCORE += sc - SCORE5
             SCORE5 = sc
             with open('score.txt', 'w') as f:
