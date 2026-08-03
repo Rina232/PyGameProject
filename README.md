@@ -16,10 +16,10 @@
 * **Стрелки на клавиатуре вправо/влево** — передвижение космического корабля.
 * **Пробел** — стрельба по астероидам.
 
-<div style="display: inline-block; width: fit-content; height: fit-content; padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">
-  <img width="1005" height="1251" alt="image" src="https://github.com/user-attachments/assets/d2bdcf11-08c7-4c37-998c-209edb94a327" />
-  <img width="997" height="1250" alt="image" src="https://github.com/user-attachments/assets/5c4f738d-5dbd-40e0-be61-13400f3bf50e" />
-</div>
+
+<img alt="image" src="https://github.com/user-attachments/assets/d2bdcf11-08c7-4c37-998c-209edb94a327" style="width: 50%; height: auto;"/>
+<img alt="image" src="https://github.com/user-attachments/assets/5c4f738d-5dbd-40e0-be61-13400f3bf50e" style="width: 50%; height: auto;" />
+
 
 
 ## Технологии
